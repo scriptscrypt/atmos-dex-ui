@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import { SetStateAction, useState, useEffect } from "react";
-import { TrendingUp, Moon, Sun } from "lucide-react";
+import { SetStateAction, useState, useEffect } from "react"
+import { TrendingUp, Moon, Sun } from "lucide-react"
 import {
   Area,
   AreaChart,
   CartesianGrid,
   XAxis,
   ResponsiveContainer,
-} from "recharts";
+} from "recharts"
 import {
   Card,
   CardContent,
@@ -16,111 +16,115 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import Image from "next/image";
-import useMode from "@/hooks/useMode";
+} from "@/components/ui/chart"
+import { Button } from "@/components/ui/button"
+import { Switch } from "@/components/ui/switch"
+import Image from "next/image"
 
 // Seed-based random number generator for consistent values
 const seededRandom = (seed: number) => {
-  const x = Math.sin(seed++) * 10000;
-  return x - Math.floor(x);
-};
+  const x = Math.sin(seed++) * 10000
+  return x - Math.floor(x)
+}
 
 const generateChartData = (period: string, seed: number = 1) => {
   // Use a fixed reference date for SSR consistency
-  const baseDate = new Date("2024-01-01T00:00:00Z");
-  const data = [];
-  let intervalMs: number;
-  let format: (date: Date) => string;
-  let count: number;
+  const baseDate = new Date("2024-01-01T00:00:00Z")
+  const data = []
+  let intervalMs: number
+  let format: (date: Date) => string
+  let count: number
 
   switch (period) {
     case "1h":
-      intervalMs = 5 * 60 * 1000; // 5 minutes
+      intervalMs = 5 * 60 * 1000 // 5 minutes
       format = (date: Date) =>
         date.toLocaleTimeString("en-US", {
           hour: "2-digit",
           minute: "2-digit",
           hour12: false,
-        });
-      count = 12;
-      break;
+        })
+      count = 12
+      break
     case "1d":
-      intervalMs = 60 * 60 * 1000; // 1 hour
+      intervalMs = 60 * 60 * 1000 // 1 hour
       format = (date: Date) =>
         date.toLocaleTimeString("en-US", {
           hour: "2-digit",
           minute: "2-digit",
           hour12: false,
-        });
-      count = 24;
-      break;
+        })
+      count = 24
+      break
     case "1m":
-      intervalMs = 24 * 60 * 60 * 1000; // 1 day
+      intervalMs = 24 * 60 * 60 * 1000 // 1 day
       format = (date: Date) =>
-        date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-      count = 30;
-      break;
+        date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+      count = 30
+      break
     case "1y":
-      intervalMs = 30 * 24 * 60 * 60 * 1000; // ~1 month
+      intervalMs = 30 * 24 * 60 * 60 * 1000 // ~1 month
       format = (date: Date) =>
-        date.toLocaleDateString("en-US", { month: "short" });
-      count = 12;
-      break;
+        date.toLocaleDateString("en-US", { month: "short" })
+      count = 12
+      break
     default:
-      intervalMs = 24 * 60 * 60 * 1000;
+      intervalMs = 24 * 60 * 60 * 1000
       format = (date: Date) =>
-        date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-      count = 30;
+        date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+      count = 30
   }
 
   for (let i = count - 1; i >= 0; i--) {
-    const date = new Date(baseDate.getTime() - i * intervalMs);
+    const date = new Date(baseDate.getTime() - i * intervalMs)
     data.push({
       time: format(date),
       price: Math.floor(seededRandom(seed + i) * 300) + 50,
-    });
+    })
   }
 
-  return data;
-};
+  return data
+}
 
 const chartConfig = {
   price: {
     label: "price",
     color: "hsl(var(--chart-1))",
   },
-};
+}
 
 export function EthChart() {
-  const [period, setPeriod] = useState("1m");
-  const [mounted, setMounted] = useState(false);
-  const [chartData, setChartData] = useState(() => generateChartData(period));
-  const { isDarkMode, setIsDarkMode } = useMode();
+  const [period, setPeriod] = useState("1m")
+  const [mounted, setMounted] = useState(false)
+  const [chartData, setChartData] = useState(() => generateChartData(period))
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
   // Only update the chart on the client side
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     if (mounted) {
-      setChartData(generateChartData(period));
+      setChartData(generateChartData(period))
     }
-  }, [period, mounted]);
+  }, [period, mounted])
 
   const handlePeriodChange = (newPeriod: SetStateAction<string>) => {
-    setPeriod(newPeriod);
-  };
+    setPeriod(newPeriod)
+  }
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode)
+  }
 
   return (
-    <div className={isDarkMode ? "dark" : ""}>
+    <div className={isDarkMode ? 'dark' : ''}>
       <Card className="w-full bg-background text-foreground">
         <CardHeader>
           <div className="flex justify-between items-center">
@@ -131,9 +135,18 @@ export function EthChart() {
                 width={16}
                 height={16}
               />
-              <div className="flex flex-col text-4xl font-semibold text-gray-600">
+              <div className="flex flex-col text-4xl font-semibold text-[#0bd790]">
                 Ethereum
               </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <Switch
+                checked={isDarkMode}
+                onCheckedChange={toggleDarkMode}
+                aria-label="Toggle dark mode"
+              />
             </div>
           </div>
 
@@ -226,5 +239,5 @@ export function EthChart() {
         </CardFooter>
       </Card>
     </div>
-  );
+  )
 }

@@ -219,7 +219,7 @@ export function SwapInterfaceComponent() {
         )}
       </div>
 
-      <Button className="w-full mt-4 h-12  rounded-full">
+      <Button className="w-full mt-4 h-12  rounded-full bg-[#0bd790] text-gray-800 text-lg hover:bg-[#0bd790e9]">
         {activeTab === "market" ? "Swap" : "Place Limit Order"}
       </Button>
     </div>

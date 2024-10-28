@@ -10,7 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Globe, Search } from 'lucide-react'
-
+import Image from 'next/image'
+import atmosLogo from "@/assets/atmosLogo.png"
 export function NavbarComponent() {
   const [activeItem, setActiveItem] = useState('Trade')
 
@@ -19,14 +20,19 @@ export function NavbarComponent() {
       <nav className="flex items-center justify-between p-4 bg-gray-900 text-white">
         <div className="flex items-center space-x-8">
           <div className="w-32">
-            {/* Logo placeholder */}
+            <Image
+              src={atmosLogo}
+              alt="Atmos Logo"
+              width={100}
+              height={100}  
+            />
           </div>
           <div className="flex space-x-6">
             {['Trade', 'Explore', 'Pool'].map((item) => (
               <button
                 key={item}
                 className={`text-sm font-medium ${
-                  activeItem === item ? 'text-pink-500' : 'text-gray-300 hover:text-white'
+                  activeItem === item ? 'text-[#0bd790]' : 'text-gray-300 hover:text-white'
                 }`}
                 onClick={() => setActiveItem(item)}
               >
@@ -57,7 +63,7 @@ export function NavbarComponent() {
               <DropdownMenuItem>Français</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button className="bg-pink-500 hover:bg-pink-600 text-white rounded-full px-4 py-2">
+          <Button className="bg-[#0bd790] hover:bg-[#0bd790d5] text-gray-800 rounded-full px-4 py-2">
             Connect
           </Button>
         </div>
