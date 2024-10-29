@@ -2,7 +2,7 @@
 
 import { EthChart } from "@/components/charts/EthChart";
 import { NavbarComponent } from "@/components/Navbar";
-import { SwapInterfaceComponent } from "@/components/swap-interface";
+import { SwapInterfaceComponent } from "@/components/SwapInterface";
 
 export default function Home() {
   return (
